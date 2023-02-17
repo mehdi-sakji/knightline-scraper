@@ -9,6 +9,30 @@ import os
 import shutil
 import datetime
 
+RESUMES_DIR = "./resumes"
+
+def set_driver():
+    # path_to_download = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resumes"))
+    # prefs = {"profile.default_content_settings.popups": 0,
+    #          "download.default_directory": os.getcwd() + os.path.sep + "resumes",
+    #          "directory_upgrade": True}
+    # prefs = {"download.default_directory":path_to_download}
+    
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    # options.add_argument("download.default_directory="+os.getcwd()+os.path.sep+"resumes")
+    # options.add_experimental_option("prefs", prefs)
+    
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    return driver
+
+if __name__=="__main__":
+     if os.path.exists(RESUMES_DIR):
+            
+    
+
 ts = str(datetime.datetime.now().timestamp())
 os.mkdir("resumes-{}".format(ts))
 
