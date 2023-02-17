@@ -12,6 +12,7 @@ import datetime
 RESUMES_DIR = "./resumes"
 
 def set_driver():
+    
     # path_to_download = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resumes"))
     # prefs = {"profile.default_content_settings.popups": 0,
     #          "download.default_directory": os.getcwd() + os.path.sep + "resumes",
@@ -28,8 +29,12 @@ def set_driver():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     return driver
 
+
 if __name__=="__main__":
-     if os.path.exists(RESUMES_DIR):
+    
+    if os.path.exists(RESUMES_DIR):
+        os.rmdir(RESUMES_DIR)
+    os.mkdir()
             
     
 
