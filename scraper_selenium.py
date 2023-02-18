@@ -46,7 +46,7 @@ tot_resumes = int(tot_resumes)
 len_blocs = banner.find_element(By.TAG_NAME, "p").text.split(" ")[2]
 len_blocs = int(len_blocs)
 n_pages = tot_resumes
-n_pages = 3 # for test
+# n_pages = 3 # for test
 
 pagination_slp = 2
 
