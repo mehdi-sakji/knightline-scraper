@@ -76,67 +76,70 @@ for page in range(n_pages):
     # len_blocs = 2 # for test
 
     for index in range(len_blocs):
-        
-        print("Scraping bloc {} of page {}...".format(str(index+1), str(page+1)))
-        if index >= 1:
-            try:
-                driver.find_element(By.CLASS_NAME, "btnBlack").click()
-            except:
-                driver.get("https://ucfbusiness.my.site.com/Knightline/s/resume-book")
-                time.sleep(load_slp)
-                for i in range(page):
-                    driver.find_elements(By.CLASS_NAME, "slds-clearfix")[-1].find_elements(By.TAG_NAME, "button")[-1].click()
-                    time.sleep(pagination_slp)
-
-        time.sleep(pagination_slp)
-        bloc = driver.find_elements(By.CLASS_NAME, "slds-size_10-of-12")[index]
-        bloc.find_element(By.TAG_NAME, "button").click()
-        time.sleep(pagination_slp)
-        resume = {}
-    
-        heading = driver.find_element(By.ID, "Heading")
-        resume["Full Name"] = heading.find_elements(By.CLASS_NAME, "sectionHead")[1].text
-        
-        print("Scraping {}...".format(resume["Full Name"]))
-
-        resume["First Name"] = resume["Full Name"].split(" ")[0]
-        resume["Email"] = heading.find_element(By.TAG_NAME, "a").get_attribute('href').replace("mailto:", "")
-        resume["Phone Number"] = heading.find_elements(By.TAG_NAME, "a")[1].get_attribute('href').replace("tel:", "")
-
-        main_content = driver.find_element(By.CLASS_NAME, "slds-wrap")
-
-        overview = main_content.find_elements(By.CLASS_NAME, "slds-col")[-2]
-        paragraphs_overview = overview.find_elements(By.CLASS_NAME, "sectionText")
-        resume["Major"] = paragraphs_overview[1].text
-        resume["Minor"] = paragraphs_overview[3].text
-        resume["GPA"] = paragraphs_overview[5].text
-        resume["Class Standing"] = paragraphs_overview[7].text
-        resume["Graduation Date"] = paragraphs_overview[9].text
-
-        details = main_content.find_elements(By.CLASS_NAME, "slds-col")[0]
-        resume["Desired Industry"] = details.find_elements(By.CLASS_NAME, "slds-col")[-1].find_elements(By.TAG_NAME, "p")[1].text
-        resume["Desired Positions"] = details.find_elements(By.CLASS_NAME, "slds-col")[1].find_elements(By.TAG_NAME, "p")[1].text
-
-        documents = driver.find_elements(By.CLASS_NAME, "slds-wrap")[-1]
         try:
-            print("downloading resume...")
-            resume["Resume"] = documents.find_elements(By.TAG_NAME, "a")[-1].text
-            documents.find_elements(By.TAG_NAME, "a")[-1].click()
-            time.sleep(pagination_slp)
-            driver.find_elements(By.CLASS_NAME, "uiButton")[0].click()
-            time.sleep(pagination_slp)
-            driver.find_elements(By.CLASS_NAME, "uiButton")[2].click()
-            time.sleep(pagination_slp*2)
-            try:
-                shutil.move(resume["Resume"]+".pdf", "./resumes-{}".format(ts))
-            except:
+            print("Scraping bloc {} of page {}...".format(str(index+1), str(page+1)))
+            if index >= 1:
                 try:
-                    shutil.move(resume["Resume"]+".docx", "./resumes-{}".format(ts))
+                    driver.find_element(By.CLASS_NAME, "btnBlack").click()
                 except:
-                    shutil.move(resume["Resume"]+".doc", "./resumes-{}".format(ts))
-        except:
-            print("No resume for {}".format(resume["Full Name"]))
-        resumes.append(resume)
+                    driver.get("https://ucfbusiness.my.site.com/Knightline/s/resume-book")
+                    time.sleep(load_slp)
+                    for i in range(page):
+                        driver.find_elements(By.CLASS_NAME, "slds-clearfix")[-1].find_elements(By.TAG_NAME, "button")[-1].click()
+                        time.sleep(pagination_slp)
+
+            time.sleep(pagination_slp)
+            bloc = driver.find_elements(By.CLASS_NAME, "slds-size_10-of-12")[index]
+            bloc.find_element(By.TAG_NAME, "button").click()
+            time.sleep(pagination_slp)
+            resume = {}
+
+            heading = driver.find_element(By.ID, "Heading")
+            resume["Full Name"] = heading.find_elements(By.CLASS_NAME, "sectionHead")[1].text
+
+            print("Scraping {}...".format(resume["Full Name"]))
+
+            resume["First Name"] = resume["Full Name"].split(" ")[0]
+            resume["Email"] = heading.find_element(By.TAG_NAME, "a").get_attribute('href').replace("mailto:", "")
+            resume["Phone Number"] = heading.find_elements(By.TAG_NAME, "a")[1].get_attribute('href').replace("tel:", "")
+
+            main_content = driver.find_element(By.CLASS_NAME, "slds-wrap")
+
+            overview = main_content.find_elements(By.CLASS_NAME, "slds-col")[-2]
+            paragraphs_overview = overview.find_elements(By.CLASS_NAME, "sectionText")
+            resume["Major"] = paragraphs_overview[1].text
+            resume["Minor"] = paragraphs_overview[3].text
+            resume["GPA"] = paragraphs_overview[5].text
+            resume["Class Standing"] = paragraphs_overview[7].text
+            resume["Graduation Date"] = paragraphs_overview[9].text
+
+            details = main_content.find_elements(By.CLASS_NAME, "slds-col")[0]
+            resume["Desired Industry"] = details.find_elements(By.CLASS_NAME, "slds-col")[-1].find_elements(By.TAG_NAME, "p")[1].text
+            resume["Desired Positions"] = details.find_elements(By.CLASS_NAME, "slds-col")[1].find_elements(By.TAG_NAME, "p")[1].text
+
+            documents = driver.find_elements(By.CLASS_NAME, "slds-wrap")[-1]
+            try:
+                print("downloading resume...")
+                resume["Resume"] = documents.find_elements(By.TAG_NAME, "a")[-1].text
+                documents.find_elements(By.TAG_NAME, "a")[-1].click()
+                time.sleep(pagination_slp)
+                driver.find_elements(By.CLASS_NAME, "uiButton")[0].click()
+                time.sleep(pagination_slp)
+                driver.find_elements(By.CLASS_NAME, "uiButton")[2].click()
+                time.sleep(pagination_slp*2)
+                try:
+                    shutil.move(resume["Resume"]+".pdf", "./resumes-{}".format(ts))
+                except:
+                    try:
+                        shutil.move(resume["Resume"]+".docx", "./resumes-{}".format(ts))
+                    except:
+                        shutil.move(resume["Resume"]+".doc", "./resumes-{}".format(ts))
+            except:
+                print("No resume for {}".format(resume["Full Name"]))
+            resumes.append(resume)
+         except:
+            print("Couldn't scrape page {} bloc {}".format(str(page), str(index)))
+            pass
 
 df_resumes = pd.DataFrame(resumes)
 print("Number of scraped profiles: {}".format(str(len(resumes))))
