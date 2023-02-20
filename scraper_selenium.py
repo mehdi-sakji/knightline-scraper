@@ -137,7 +137,7 @@ for page in range(n_pages):
             except:
                 print("No resume for {}".format(resume["Full Name"]))
             resumes.append(resume)
-         except:
+        except:
             print("Couldn't scrape page {} bloc {}".format(str(page), str(index)))
             pass
 
